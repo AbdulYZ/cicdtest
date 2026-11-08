@@ -1,16 +1,17 @@
+
 FROM debian:forky-20251020
 
 WORKDIR /application
 
-COPY /server.py .
-COPY /requirements.txt .
-
 RUN apt-get update && apt-get install -y python3 python3-pip
+
+COPY src/server.py .
+COPY src/requirements.txt .
+COPY src/app.txt .
 
 RUN pip3 install --break-system-packages -r requirements.txt
 
 RUN mkdir -p /application/data
-
 
 RUN useradd \
     --user-group \
