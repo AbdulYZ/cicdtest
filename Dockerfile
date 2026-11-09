@@ -1,9 +1,8 @@
+FROM debian:latest
 
-FROM debian:forky-20251020
+WORKDIR /a3
 
-WORKDIR /application
-
-RUN apt-get update && apt-get install -y python3 python3-pip
+RUN apt-get update && apt-get install -y python3 python3-pip 
 
 COPY src/server.py .
 COPY src/requirements.txt .
@@ -11,20 +10,20 @@ COPY src/app.txt .
 
 RUN pip3 install --break-system-packages -r requirements.txt
 
-RUN mkdir -p /application/data
+RUN mkdir -p /a3/data
 
 RUN useradd \
     --user-group \
     --system \
     --home-dir /nonexistent \
-    --shell /sbin/nologin \
+    --shell /usr/sbin/nologin \
     --no-create-home \
     --uid 1000 \
-    application
+    appuser
 
-RUN chown -R application:application /application
+RUN chown -R appuser:appuser /a3
 
-USER application
+USER appuser
 
 EXPOSE 5000
 
